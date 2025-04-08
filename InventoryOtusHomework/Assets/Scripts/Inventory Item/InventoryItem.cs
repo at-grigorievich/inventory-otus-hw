@@ -17,10 +17,20 @@ namespace ATG.OtusHW.Inventory
         
         public InventoryItem Clone()
         {
+            var copiedComponents = new IItemComponent[Components.Length];
+            
+            for (var i = 0; i < copiedComponents.Length; i++)
+            {
+                IItemComponent component = Components[i];
+                copiedComponents[i] = component.Clone();
+            }
+            
             return new InventoryItem()
             {
                 Id = Id,
-                MetaData = MetaData.Clone()
+                MetaData = MetaData.Clone(),
+                Components = copiedComponents,
+                Flags = Flags
             };
         }
         

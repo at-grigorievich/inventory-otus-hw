@@ -13,5 +13,24 @@ MonoBehaviour:
   m_Name: InventoryItemConfig
   m_EditorClassIdentifier: 
   Prototype:
-    Id: 
-    Flags: 0
+    Id: 1
+    MetaData:
+      Name: Item
+      Description: Item description
+      Icon: {fileID: 0}
+    Flags: 11
+    Components:
+    - rid: 3887614921745629186
+    - rid: 3887614921745629192
+  references:
+    version: 2
+    RefIds:
+    - rid: 3887614921745629186
+      type: {class: StackableItemComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        Count: 5
+        MaxCount: 51
+    - rid: 3887614921745629192
+      type: {class: HeroDamageEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        DamageEffect: 2
