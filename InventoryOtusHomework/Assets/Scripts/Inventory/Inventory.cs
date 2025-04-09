@@ -100,6 +100,17 @@ namespace ATG.OtusHW.Inventory
             }
         }
 
+        public static void ConsumeItem(Inventory inventory, InventoryItem item, bool consumeByRef = false)
+        {
+            if (CanConsume(item) == true)
+            {
+                var removed = RemoveItem(inventory, item, removeByRef: consumeByRef);
+                if(removed == null) return;
+                
+                inventory.NotifyItemConsumed(removed);
+            }
+        }
+        
         public static void ConsumeItem(Inventory inventory, InventoryItemConfig itemConfig)
         {
             var proto = itemConfig.Prototype;

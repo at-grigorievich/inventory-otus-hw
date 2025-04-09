@@ -64,7 +64,7 @@ namespace ATG.OtusHW.Inventory
 
         private void OnConsumeClicked(InventoryItem obj)
         {
-            throw new NotImplementedException();
+            InventoryUseCases.ConsumeItem(_inventory, obj, consumeByRef: true);
         }
     }
 }

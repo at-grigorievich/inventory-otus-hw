@@ -116,6 +116,15 @@ namespace ATG.OtusHW.Inventory.UI
             
             _activeItems.Remove(removedView);
             pool.Enqueue(removedView);
+
+            if (ReferenceEquals(removedView, _lastSelected))
+            {
+                SetupConsumeButton(false);
+                SetupEquipButton(false);
+                SetupDropButton(false);
+
+                _lastSelected = null;
+            }
         }
 
         private void OnSelectedView(ItemView obj)
