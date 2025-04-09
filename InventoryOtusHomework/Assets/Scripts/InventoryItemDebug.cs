@@ -29,6 +29,7 @@ namespace ATG.OtusHW.Inventory
         private void OnDestroy()
         {
             _heroItemsEffectsController.OnDispose();
+            _inventoryViewPresenter.Dispose();
         }
 
         [Button]

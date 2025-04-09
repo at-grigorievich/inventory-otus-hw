@@ -1,6 +1,5 @@
 ﻿using System;
 using ATG.OtusHW.Inventory.UI;
-using UnityEngine;
 
 namespace ATG.OtusHW.Inventory
 {
@@ -19,8 +18,12 @@ namespace ATG.OtusHW.Inventory
             
             _inventory.OnItemRemoved += OnItemRemoved;
             _inventory.OnItemRemoveStacked += OnItemStacked;
+            
+            _inventoryView.OnConsumeClicked += OnConsumeClicked;
+            _inventoryView.OnDropClicked += OnDropClicked;
+            _inventoryView.OnEquipClicked += OnEquipClicked;
         }
-
+        
         public void Dispose()
         {
             _inventory.OnItemAdded -= OnItemAdded;
@@ -28,6 +31,10 @@ namespace ATG.OtusHW.Inventory
             
             _inventory.OnItemRemoved -= OnItemRemoved;
             _inventory.OnItemRemoveStacked -= OnItemStacked;
+            
+            _inventoryView.OnConsumeClicked -= OnConsumeClicked;
+            _inventoryView.OnDropClicked -= OnDropClicked;
+            _inventoryView.OnEquipClicked -= OnEquipClicked;
         }
         
         public void OnItemAdded(InventoryItem item)
@@ -37,12 +44,27 @@ namespace ATG.OtusHW.Inventory
 
         public void OnItemRemoved(InventoryItem item)
         {
-            _inventoryView.RemoveItem(item);
+            _inventoryView.RemoveItem(item, removeByRef: true);
         }
         
         private void OnItemStacked(InventoryItem obj)
         {
             _inventoryView.ChangeItem(obj);
+        }
+        
+        private void OnEquipClicked(InventoryItem obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnDropClicked(InventoryItem obj)
+        {
+            InventoryUseCases.RemoveItem(_inventory, obj, removeByRef: true);
+        }
+
+        private void OnConsumeClicked(InventoryItem obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

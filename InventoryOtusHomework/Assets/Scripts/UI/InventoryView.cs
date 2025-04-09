@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ATG.OtusHW.Inventory.UI
 {
@@ -50,26 +52,41 @@ namespace ATG.OtusHW.Inventory.UI
     public sealed class InventoryView: MonoBehaviour
     {
         [SerializeField] private InventoryViewPool pool;
-
+        [Space(10)]
+        [SerializeField] private Button dropBtn;
+        [SerializeField] private Button consumeBtn;
+        [SerializeField] private Button equipBtn;
+        
         private HashSet<ItemView> _activeItems = new HashSet<ItemView>() ;
 
         private ItemView _lastSelected;
+
+        public event Action<InventoryItem> OnDropClicked;
+        public event Action<InventoryItem> OnConsumeClicked;
+        public event Action<InventoryItem> OnEquipClicked; 
         
         private void Awake()
         {
             pool.InitPool();
+            SetupConsumeButton(false);
+            SetupEquipButton(false);
+            SetupDropButton(false);
+        }
+
+        private void OnEnable()
+        {
+            dropBtn.onClick.AddListener(OnDropClickedHandler);
+            consumeBtn.onClick.AddListener(OnConsumeClickedHandler);
+            equipBtn.onClick.AddListener(OnEquipClickedHandler);
+        }
+
+        private void OnDisable()
+        {
+            dropBtn.onClick.RemoveAllListeners();
+            consumeBtn.onClick.RemoveAllListeners();
+            equipBtn.onClick.RemoveAllListeners();
         }
         
-        public void Show()
-        {
-            //TODO...
-        }
-
-        public void Hide()
-        {
-            //TODO...
-        }
-
         public void AddItem(InventoryItem item)
         {
             ItemViewData viewData = new ItemViewData(item);
@@ -85,35 +102,15 @@ namespace ATG.OtusHW.Inventory.UI
         public void ChangeItem(InventoryItem item)
         {
             ItemViewData viewData = new ItemViewData(item);
+
+            ItemView selectedView = GetActive(item, true);
             
-            foreach (var view in _activeItems)
-            {
-                if(view.Data.HasValue == false) continue;
-                
-                if(view.Data.Value.Id == item.Id == false) continue;
-                
-                view.Show(viewData);
-                
-                return;
-            }
+            selectedView.Show(viewData);
         }
 
-        public void RemoveItem(InventoryItem item)
+        public void RemoveItem(InventoryItem item, bool removeByRef = false)
         {
-            ItemView removedView = null;
-            
-            foreach (var view in _activeItems)
-            {
-                if(view.Data.HasValue == false) continue;
-                
-                if(view.Data.Value.Id == item.Id == false) continue;
-
-                removedView = view;
-                break;
-            }
-
-            if (removedView == null)
-                throw new NullReferenceException($"Item {item.Id} was not found in inventory view");
+            ItemView removedView = GetActive(item, removeByRef);
             
             removedView.OnSelected -= OnSelectedView;
             
@@ -131,6 +128,43 @@ namespace ATG.OtusHW.Inventory.UI
             obj.SetSelectedStatus(true);
             
             _lastSelected = obj;
+            
+            SetupConsumeButton(_lastSelected.Data.IsConsumable);
+            SetupEquipButton(_lastSelected.Data.IsEquipable);
+            SetupDropButton(true);
+        }
+        
+        private void SetupDropButton(bool isActive) => dropBtn.gameObject.SetActive(isActive);
+        private void SetupConsumeButton(bool isActive) => consumeBtn.gameObject.SetActive(isActive);
+        private void SetupEquipButton(bool isActive) => equipBtn.gameObject.SetActive(isActive);
+        
+        private void OnDropClickedHandler()
+        {
+            if(_lastSelected == null) return;
+            OnDropClicked?.Invoke(_lastSelected.Data.Item);
+        }
+        private void OnConsumeClickedHandler()
+        {
+            if(_lastSelected == null) return;
+            
+            OnConsumeClicked?.Invoke(_lastSelected.Data.Item); 
+        }
+        private void OnEquipClickedHandler()
+        {
+            if(_lastSelected == null) return;
+            
+            OnEquipClicked?.Invoke(_lastSelected.Data.Item);
+        }
+
+        private ItemView GetActive(InventoryItem item, bool findByRef)
+        {
+            ItemView result = _activeItems.FirstOrDefault(i => findByRef == false 
+                ? i.Data.Id == item.Id : ReferenceEquals(item, i.Data.Item));
+            
+            if(result == null)
+                throw new NullReferenceException($"Item {item.Id} was not found in inventory view");
+            
+            return result;
         }
     }
 }

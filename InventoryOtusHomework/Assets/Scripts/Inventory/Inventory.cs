@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ATG.OtusHW.Inventory
 {
@@ -46,6 +47,7 @@ namespace ATG.OtusHW.Inventory
         public static void AddItem(Inventory inventory, InventoryItem item)
         {
             if (TryAddStackItem(inventory, item) == true) return;
+            
             inventory.Items.Add(item);
             inventory.NotifyItemAdded(item);
         }
@@ -58,9 +60,11 @@ namespace ATG.OtusHW.Inventory
             }
         }
         
-        public static InventoryItem RemoveItem(Inventory inventory, InventoryItem item)
+        public static InventoryItem RemoveItem(Inventory inventory, InventoryItem item, bool removeByRef = false)
         {
-            var res = inventory.Items.FirstOrDefault(i => i.Id == item.Id);
+            InventoryItem res = removeByRef == false
+                ? inventory.Items.FirstOrDefault(i => i.Id == item.Id)
+                : inventory.Items.FirstOrDefault(i => ReferenceEquals(item, i));
             
             if(res == null) return null;
             
@@ -114,17 +118,19 @@ namespace ATG.OtusHW.Inventory
         {
             if (CanStack(item) == true)
             {
-                var stacked = inventory.Items.FirstOrDefault(i => i.Id == item.Id);
-                if (stacked == null) return false;
-                
-                if(stacked.TryGetComponent(out StackableItemComponent component) == false) return false;
-                
-                if(component.Count == component.MaxCount) return false;
+                foreach (var inventoryItem in inventory.Items)
+                {
+                    if(item.Id != inventoryItem.Id) continue;
+                    if(inventoryItem.TryGetComponent(out StackableItemComponent component) == false) continue;
+                    
+                    Debug.Log(component.Count == component.MaxCount);
+                    if (component.Count == component.MaxCount) continue;
 
-                component.Count++;
-                
-                inventory.NotifyItemAddStacked(stacked);
-                return true;
+                    component.Count++;
+                    
+                    inventory.NotifyItemAddStacked(inventoryItem);
+                    return true;
+                }
             }
 
             return false;
@@ -134,16 +140,13 @@ namespace ATG.OtusHW.Inventory
         {
             if (CanStack(item) == true)
             {
-                var stacked = inventory.Items.FirstOrDefault(i => i.Id == item.Id);
-                if (stacked == null) return false;
-                
-                if(stacked.TryGetComponent(out StackableItemComponent component) == false) return false;
+                if(item.TryGetComponent(out StackableItemComponent component) == false) return false;
                 
                 if(component.Count <= 1) return false;
 
                 component.Count--;
                 
-                inventory.NotifyItemRemoveStacked(stacked);
+                inventory.NotifyItemRemoveStacked(item);
                 return true;
             }
 

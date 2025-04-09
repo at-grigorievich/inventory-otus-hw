@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public readonly struct ItemViewData
 {
+    public readonly InventoryItem Item;
+    
     public readonly string Id;
     public readonly string Name;
     public readonly Sprite Icon;
@@ -21,6 +23,8 @@ public readonly struct ItemViewData
 
     public ItemViewData(InventoryItem item)
     {
+        Item = item;
+        
         Id = item.Id;
         Name = item.MetaData.Name;
         Icon = item.MetaData.Icon;
@@ -50,7 +54,7 @@ public class ItemView : MonoBehaviour, IPointerClickHandler
     
     public event Action<ItemView> OnSelected;
     
-    public ItemViewData? Data { get; private set; }
+    public ItemViewData Data { get; private set; }
     
     private void Awake()
     {
@@ -77,7 +81,7 @@ public class ItemView : MonoBehaviour, IPointerClickHandler
         gameObject.SetActive(false);
         counter.SetActive(false);
 
-        Data = null;
+        Data = default;
     }
 
     public void SetSelectedStatus(bool isSelected)
