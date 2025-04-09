@@ -95,6 +95,16 @@ namespace ATG.OtusHW.Inventory
             return HasFlag(item, ItemFlags.Consumable);
         }
 
+        public static bool CanStack(InventoryItem item)
+        {
+            return HasFlag(item, ItemFlags.Stackable);
+        }
+
+        public static bool CanEquip(InventoryItem item)
+        {
+            return HasFlag(item, ItemFlags.Equippable);
+        }
+
         public static bool HasFlag(InventoryItem item, ItemFlags itemFlag)
         {
             return (item.Flags & itemFlag) == itemFlag;
