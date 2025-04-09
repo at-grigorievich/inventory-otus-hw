@@ -82,6 +82,22 @@ namespace ATG.OtusHW.Inventory.UI
             _activeItems.Add(view);
         }
 
+        public void ChangeItem(InventoryItem item)
+        {
+            ItemViewData viewData = new ItemViewData(item);
+            
+            foreach (var view in _activeItems)
+            {
+                if(view.Data.HasValue == false) continue;
+                
+                if(view.Data.Value.Id == item.Id == false) continue;
+                
+                view.Show(viewData);
+                
+                return;
+            }
+        }
+
         public void RemoveItem(InventoryItem item)
         {
             ItemView removedView = null;
@@ -90,9 +106,10 @@ namespace ATG.OtusHW.Inventory.UI
             {
                 if(view.Data.HasValue == false) continue;
                 
-                if(ReferenceEquals(view.Data.Value.Item, item) == false) continue;
+                if(view.Data.Value.Id == item.Id == false) continue;
 
                 removedView = view;
+                break;
             }
 
             if (removedView == null)

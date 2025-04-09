@@ -19,13 +19,19 @@ namespace ATG.OtusHW.Inventory
             _hero = hero;
             
             inventory.OnItemAdded += OnItemAdded;
+            inventory.OnItemAddStacked += OnItemAdded;
+            
             inventory.OnItemRemoved += OnItemRemoved;
+            inventory.OnItemRemoveStacked += OnItemRemoved;
         }
 
         public void OnDispose()
         {
             _inventory.OnItemAdded -= OnItemAdded;
+            _inventory.OnItemAddStacked -= OnItemAdded;
+            
             _inventory.OnItemRemoved -= OnItemRemoved;
+            _inventory.OnItemRemoveStacked -= OnItemRemoved;
         }
         
         public void OnItemAdded(InventoryItem item)

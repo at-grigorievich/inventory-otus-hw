@@ -1,4 +1,5 @@
 ﻿using System;
+using ATG.OtusHW.Inventory.UI;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -9,8 +10,11 @@ namespace ATG.OtusHW.Inventory
         public InventoryItemConfig Config;
         public Inventory Inventory;
         public Hero Hero;
+        public InventoryView InventoryView;
+        
         private HeroItemsEffectsController _heroItemsEffectsController = new();
         private HeroItemsConsumeObserver _heroItemsConsumeObserver = new();
+        private InventoryViewPresenter _inventoryViewPresenter;
         
         [ReadOnly] public InventoryItem Item;
 
@@ -18,6 +22,8 @@ namespace ATG.OtusHW.Inventory
         {
             _heroItemsEffectsController.Construct(Inventory, Hero);
             _heroItemsConsumeObserver.Construct(Inventory, Hero);
+
+            _inventoryViewPresenter = new InventoryViewPresenter(Inventory, InventoryView);
         }
 
         private void OnDestroy()

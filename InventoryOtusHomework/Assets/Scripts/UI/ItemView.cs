@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 public readonly struct ItemViewData
 {
-    public readonly InventoryItem Item;
-    
     public readonly string Id;
     public readonly string Name;
     public readonly Sprite Icon;
@@ -23,8 +21,6 @@ public readonly struct ItemViewData
 
     public ItemViewData(InventoryItem item)
     {
-        Item = item;
-        
         Id = item.Id;
         Name = item.MetaData.Name;
         Icon = item.MetaData.Icon;
@@ -33,10 +29,10 @@ public readonly struct ItemViewData
         IsConsumable = InventoryUseCases.CanConsume(item);
         IsEquipable = InventoryUseCases.CanEquip(item);
 
-        if (IsStackable)
+        if (IsStackable == true && item.TryGetComponent(out StackableItemComponent component) == true)
         {
-            StackCurrent = 5;
-            StackMax = 10;
+            StackCurrent = component.Count;
+            StackMax = component.MaxCount;
         }
         else
         {
@@ -45,11 +41,8 @@ public readonly struct ItemViewData
     }
 }
 
-[RequireComponent(typeof(CanvasGroup))]
 public class ItemView : MonoBehaviour, IPointerClickHandler
 {
-    private CanvasGroup _canvasGroup;
-    
     [SerializeField] private TMP_Text itemNameOutput;
     [SerializeField] private Image icon;
     [SerializeField] private CounterView counter;
@@ -61,7 +54,6 @@ public class ItemView : MonoBehaviour, IPointerClickHandler
     
     private void Awake()
     {
-        _canvasGroup = GetComponent<CanvasGroup>();
         counter.SetActive(false);
         SetSelectedStatus(false);
     }
@@ -77,12 +69,12 @@ public class ItemView : MonoBehaviour, IPointerClickHandler
         counter.SetActive(data.IsStackable);
         counter.UpdateCount(data.StackCurrent, data.StackMax);
         
-        _canvasGroup.alpha = 1;
+        gameObject.SetActive(true);
     }
     
     public void Hide()
     {
-        _canvasGroup.alpha = 0;
+        gameObject.SetActive(false);
         counter.SetActive(false);
 
         Data = null;

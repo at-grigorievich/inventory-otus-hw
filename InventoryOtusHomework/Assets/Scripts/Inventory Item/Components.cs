@@ -15,7 +15,7 @@ namespace ATG.OtusHW.Inventory
         
         public IItemComponent Clone()
         {
-            return new StackableItemComponent() { Count = Count, MaxCount = MaxCount };
+            return new StackableItemComponent() { Count = 1, MaxCount = MaxCount };
         }
     }
     

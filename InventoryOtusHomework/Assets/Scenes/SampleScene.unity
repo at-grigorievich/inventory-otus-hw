@@ -170,6 +170,7 @@ MonoBehaviour:
   Inventory:
     Items: []
   Hero: {fileID: 1601097296}
+  InventoryView: {fileID: 1567839063}
   Item:
     Id: 
     MetaData:

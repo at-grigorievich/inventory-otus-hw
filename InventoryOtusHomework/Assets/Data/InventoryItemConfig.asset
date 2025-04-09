@@ -17,7 +17,7 @@ MonoBehaviour:
     MetaData:
       Name: Item
       Description: Item description
-      Icon: {fileID: 0}
+      Icon: {fileID: 21300000, guid: 0ca0533d8811e8e4780225b6564796f5, type: 3}
     Flags: 11
     Components:
     - rid: 3887614921745629186
@@ -28,8 +28,8 @@ MonoBehaviour:
     - rid: 3887614921745629186
       type: {class: StackableItemComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
       data:
-        Count: 5
-        MaxCount: 51
+        Count: 1
+        MaxCount: 3
     - rid: 3887614921745629192
       type: {class: HeroDamageEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
       data:

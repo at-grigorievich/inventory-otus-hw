@@ -9,7 +9,9 @@ namespace ATG.OtusHW.Inventory
     {
         public event Action<InventoryItem> OnItemAdded;
         public event Action<InventoryItem> OnItemRemoved;
-        public event Action<InventoryItem> OnItemConsumed; 
+        public event Action<InventoryItem> OnItemConsumed;
+        public event Action<InventoryItem> OnItemAddStacked; 
+        public event Action<InventoryItem> OnItemRemoveStacked; 
         
         public List<InventoryItem> Items = new();
         
@@ -27,12 +29,23 @@ namespace ATG.OtusHW.Inventory
         {
             OnItemConsumed?.Invoke(item);
         }
+
+        public void NotifyItemAddStacked(InventoryItem item)
+        {
+            OnItemAddStacked?.Invoke(item);
+        }
+        
+        public void NotifyItemRemoveStacked(InventoryItem item)
+        {
+            OnItemRemoveStacked?.Invoke(item);
+        }
     }
 
     public class InventoryUseCases
     {
         public static void AddItem(Inventory inventory, InventoryItem item)
         {
+            if (TryAddStackItem(inventory, item) == true) return;
             inventory.Items.Add(item);
             inventory.NotifyItemAdded(item);
         }
@@ -51,8 +64,10 @@ namespace ATG.OtusHW.Inventory
             
             if(res == null) return null;
             
+            if (TryRemoveStackItem(inventory, res) == true) return res;
+            
             inventory.Items.Remove(res);
-            inventory.NotifyItemRemoved(item);
+            inventory.NotifyItemRemoved(res);
 
             return res;
         }
@@ -65,10 +80,12 @@ namespace ATG.OtusHW.Inventory
             
             if(res == null) return null;
             
+            if (TryRemoveStackItem(inventory, res) == true) return res;
+            
             inventory.Items.Remove(res);
-            inventory.NotifyItemRemoved(item);
+            inventory.NotifyItemRemoved(res);
 
-            return item;
+            return res;
         }
         
         public static void RemoveItems(Inventory inventory, InventoryItem item, int count)
@@ -86,8 +103,51 @@ namespace ATG.OtusHW.Inventory
             if (CanConsume(proto) == true)
             {
                 var removed = RemoveItem(inventory, itemConfig);
+                if(removed == null) return;
+                
                 inventory.NotifyItemConsumed(removed);
             }
+        }
+
+        
+        private static bool TryAddStackItem(Inventory inventory, InventoryItem item)
+        {
+            if (CanStack(item) == true)
+            {
+                var stacked = inventory.Items.FirstOrDefault(i => i.Id == item.Id);
+                if (stacked == null) return false;
+                
+                if(stacked.TryGetComponent(out StackableItemComponent component) == false) return false;
+                
+                if(component.Count == component.MaxCount) return false;
+
+                component.Count++;
+                
+                inventory.NotifyItemAddStacked(stacked);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryRemoveStackItem(Inventory inventory, InventoryItem item)
+        {
+            if (CanStack(item) == true)
+            {
+                var stacked = inventory.Items.FirstOrDefault(i => i.Id == item.Id);
+                if (stacked == null) return false;
+                
+                if(stacked.TryGetComponent(out StackableItemComponent component) == false) return false;
+                
+                if(component.Count <= 1) return false;
+
+                component.Count--;
+                
+                inventory.NotifyItemRemoveStacked(stacked);
+                return true;
+            }
+
+            return false;
         }
 
         public static bool CanConsume(InventoryItem item)
