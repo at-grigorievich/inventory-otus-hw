@@ -133,8 +133,6 @@ namespace ATG.OtusHW.Inventory
                 {
                     if(item.Id != inventoryItem.Id) continue;
                     if(inventoryItem.TryGetComponent(out StackableItemComponent component) == false) continue;
-                    
-                    Debug.Log(component.Count == component.MaxCount);
                     if (component.Count == component.MaxCount) continue;
 
                     component.Count++;
