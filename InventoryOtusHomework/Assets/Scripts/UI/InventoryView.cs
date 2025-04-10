@@ -119,6 +119,8 @@ namespace ATG.OtusHW.Inventory.UI
 
             if (ReferenceEquals(removedView, _lastSelected))
             {
+                _lastSelected.SetSelectedStatus(false);
+                
                 SetupConsumeButton(false);
                 SetupEquipButton(false);
                 SetupDropButton(false);

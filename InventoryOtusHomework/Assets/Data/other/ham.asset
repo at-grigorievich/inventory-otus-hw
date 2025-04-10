@@ -17,7 +17,7 @@ MonoBehaviour:
     MetaData:
       Name: ham
       Description: 
-      Icon: {fileID: 0}
+      Icon: {fileID: 21300000, guid: 1725ba272e9b1b24fbcb05b5f8e6b1a4, type: 3}
     Flags: 3
     Components:
     - rid: 3887614963590103066

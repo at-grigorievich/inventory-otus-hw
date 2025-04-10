@@ -7,6 +7,12 @@ namespace ATG.OtusHW.Inventory
         void OnItemAdded(InventoryItem item);
         void OnItemRemoved(InventoryItem item);
     }
+
+    public interface IEquipmentObserver
+    {
+        void OnItemTakeOn(InventoryItem item);
+        void OnItemTakeOff(InventoryItem item);
+    }
     
     public class HeroItemsEffectsController : IInventoryObserver
     {

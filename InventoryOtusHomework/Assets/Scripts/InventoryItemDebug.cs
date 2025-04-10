@@ -7,29 +7,37 @@ namespace ATG.OtusHW.Inventory
 {
     public class InventoryItemDebug: MonoBehaviour
     {
-        public InventoryItemConfig Config;
         public Inventory Inventory;
+        public Equipment Equipment;
+        
         public Hero Hero;
+        
         public InventoryView InventoryView;
+        public EquipmentSetView EquipmentView;
         
         private HeroItemsEffectsController _heroItemsEffectsController = new();
         private HeroItemsConsumeObserver _heroItemsConsumeObserver = new();
-        private InventoryViewPresenter _inventoryViewPresenter;
-        
-        [ReadOnly] public InventoryItem Item;
+       
+        private InventoryPresenter _inventoryPresenter;
+        private EquipmentPresenter _equipmentPresenter;
+
+        private InventoryToEquipmentProvider _provider;
 
         private void Awake()
         {
             _heroItemsEffectsController.Construct(Inventory, Hero);
             _heroItemsConsumeObserver.Construct(Inventory, Hero);
 
-            _inventoryViewPresenter = new InventoryViewPresenter(Inventory, InventoryView);
+            _inventoryPresenter = new InventoryPresenter(Inventory, InventoryView);
+            _equipmentPresenter = new EquipmentPresenter(Equipment, EquipmentView);
+
+            _provider = new InventoryToEquipmentProvider(Inventory, Equipment, InventoryView, EquipmentView);
         }
 
         private void OnDestroy()
         {
             _heroItemsEffectsController.OnDispose();
-            _inventoryViewPresenter.Dispose();
+            _inventoryPresenter.Dispose();
         }
 
         [Button]

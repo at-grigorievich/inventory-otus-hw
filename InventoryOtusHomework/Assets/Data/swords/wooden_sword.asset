@@ -17,7 +17,7 @@ MonoBehaviour:
     MetaData:
       Name: 
       Description: 
-      Icon: {fileID: 0}
+      Icon: {fileID: 21300000, guid: a9424a3b842d72444b0c05f46d02138f, type: 3}
     Flags: 4
     Components:
     - rid: 3887614963590103085
