@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items
 {
     [Flags]
     public enum ItemFlags

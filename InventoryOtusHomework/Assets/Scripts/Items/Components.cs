@@ -1,6 +1,7 @@
 ﻿using System;
+using ATG.OtusHW.Inventory;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items
 {
     public interface IItemComponent
     {

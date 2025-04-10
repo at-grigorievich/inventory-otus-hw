@@ -1,7 +1,6 @@
 ﻿using System;
-using ATG.OtusHW.Inventory.UI;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items.Inventory
 {
     public sealed class InventoryPresenter: IInventoryObserver, IDisposable
     {
@@ -35,27 +34,27 @@ namespace ATG.OtusHW.Inventory
             _inventoryView.OnDropClicked -= OnDropClicked;
         }
         
-        public void OnItemAdded(InventoryItem item)
+        public void OnItemAdded(Item item)
         {
             _inventoryView.AddItem(item);
         }
 
-        public void OnItemRemoved(InventoryItem item)
+        public void OnItemRemoved(Item item)
         {
             _inventoryView.RemoveItem(item, removeByRef: true);
         }
         
-        private void OnItemStacked(InventoryItem obj)
+        private void OnItemStacked(Item obj)
         {
             _inventoryView.ChangeItem(obj);
         }
         
-        private void OnDropClicked(InventoryItem obj)
+        private void OnDropClicked(Item obj)
         {
             InventoryUseCases.RemoveItem(_inventory, obj, removeByRef: true);
         }
 
-        private void OnConsumeClicked(InventoryItem obj)
+        private void OnConsumeClicked(Item obj)
         {
             InventoryUseCases.ConsumeItem(_inventory, obj, consumeByRef: true);
         }

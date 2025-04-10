@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items
 {
     [Serializable, ShowOdinSerializedPropertiesInInspector]
-    public class InventoryItem
+    public class Item
     {
         public string Id;
 
-        public InventoryItemMetaData MetaData;
+        public ItemMetaData MetaData;
         public ItemFlags Flags;
         
         [SerializeReference]
         public IItemComponent[] Components;
         
-        public InventoryItem Clone()
+        public Item Clone()
         {
             var copiedComponents = new IItemComponent[Components.Length];
             
@@ -27,7 +26,7 @@ namespace ATG.OtusHW.Inventory
                 copiedComponents[i] = component.Clone();
             }
             
-            return new InventoryItem()
+            return new Item()
             {
                 Id = Id,
                 MetaData = MetaData.Clone(),
@@ -70,15 +69,15 @@ namespace ATG.OtusHW.Inventory
     }
 
     [Serializable]
-    public class InventoryItemMetaData
+    public class ItemMetaData
     {
         public string Name;
         public string Description;
         public Sprite Icon;
 
-        public InventoryItemMetaData Clone()
+        public ItemMetaData Clone()
         {
-            return new InventoryItemMetaData()
+            return new ItemMetaData()
             {
                 Name = Name,
                 Description = Description,

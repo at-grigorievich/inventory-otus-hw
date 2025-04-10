@@ -1,7 +1,6 @@
 ﻿using System;
-using ATG.OtusHW.Inventory.UI;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items.Equipment
 {
     public class EquipmentPresenter: IEquipmentObserver, IDisposable
     {
@@ -18,12 +17,12 @@ namespace ATG.OtusHW.Inventory
             _equipment.OnItemTakeOff += OnItemTakeOff;
         }
         
-        public void OnItemTakeOn(InventoryItem item)
+        public void OnItemTakeOn(Item item)
         {
             _view.AddItem(item);
         }
 
-        public void OnItemTakeOff(InventoryItem item)
+        public void OnItemTakeOff(Item item)
         {
             _view.RemoveItem(item);
         }

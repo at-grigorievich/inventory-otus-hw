@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items.Equipment
 {
     public sealed class HeroEquipEffectObserver: IEquipmentObserver, IDisposable
     {
@@ -17,7 +17,7 @@ namespace ATG.OtusHW.Inventory
             _equipment.OnItemTakeOff += OnItemTakeOff;
         }
         
-        public void OnItemTakeOn(InventoryItem item)
+        public void OnItemTakeOn(Item item)
         {
             if(item.TryGetComponents(out IEnumerable<HeroEffectComponent> effects) == false) return;
 
@@ -27,7 +27,7 @@ namespace ATG.OtusHW.Inventory
             }
         }
 
-        public void OnItemTakeOff(InventoryItem item)
+        public void OnItemTakeOff(Item item)
         {
             if(item.TryGetComponents(out IEnumerable<HeroEffectComponent> effects) == false) return;
 

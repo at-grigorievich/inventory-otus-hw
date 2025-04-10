@@ -1,17 +1,17 @@
 ﻿using System;
-using ATG.OtusHW.Inventory.UI;
+using ATG.Items.Equipment;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items.Inventory
 {
     public class InventoryToEquipmentProvider: IDisposable
     {
         private readonly Inventory _inventory;
-        private readonly Equipment _equipment;
+        private readonly Equipment.Equipment _equipment;
 
         private readonly InventoryView _inventoryView;
         private readonly EquipmentSetView _equipmentView;
 
-        public InventoryToEquipmentProvider(Inventory inventory, Equipment equipment, 
+        public InventoryToEquipmentProvider(Inventory inventory, Equipment.Equipment equipment, 
             InventoryView inventoryView, EquipmentSetView equipmentView)
         {
             _inventory = inventory;
@@ -26,7 +26,7 @@ namespace ATG.OtusHW.Inventory
             _equipmentView.OnItemTakeOffClicked += OnTakeOffClickedClicked;
         }
 
-        private void OnEquipClicked(InventoryItem obj)
+        private void OnEquipClicked(Item obj)
         {
             var equipped = InventoryUseCases.RemoveItem(_inventory, obj, removeByRef: true);
             
@@ -35,12 +35,12 @@ namespace ATG.OtusHW.Inventory
             EquipmentUseCases.TakeOnItem(_equipment, equipped);
         }
         
-        private void OnTakeOffClickedClicked(InventoryItem obj)
+        private void OnTakeOffClickedClicked(Item obj)
         {
             EquipmentUseCases.TakeOffItem(_equipment, obj);
         }
 
-        private void OnItemTakeOff(InventoryItem obj)
+        private void OnItemTakeOff(Item obj)
         {
             InventoryUseCases.AddItem(_inventory, obj);
         }

@@ -1,5 +1,5 @@
 using System;
-using ATG.OtusHW.Inventory;
+using ATG.Items;
 using ATG.OtusHW.Inventory.UI;
 using TMPro;
 using UnityEngine;
@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public readonly struct ItemViewData
 {
-    public readonly InventoryItem Item;
+    public readonly Item Item;
     
     public readonly string Id;
     public readonly string Name;
@@ -21,17 +21,17 @@ public readonly struct ItemViewData
     public readonly bool IsConsumable;
     public readonly bool IsEquipable;
 
-    public ItemViewData(InventoryItem item)
+    public ItemViewData(Item item)
     {
         Item = item;
         
         Id = item.Id;
         Name = item.MetaData.Name;
         Icon = item.MetaData.Icon;
-        
-        IsStackable = InventoryUseCases.CanStack(item);
-        IsConsumable = InventoryUseCases.CanConsume(item);
-        IsEquipable = InventoryUseCases.CanEquip(item);
+
+        IsStackable = item.CanStack();
+        IsConsumable = item.CanConsume();
+        IsEquipable = item.CanEquip();
 
         if (IsStackable == true && item.TryGetComponent(out StackableItemComponent component) == true)
         {

@@ -1,185 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items.Inventory
 {
     [Serializable]
     public class Inventory
     {
-        public event Action<InventoryItem> OnItemAdded;
-        public event Action<InventoryItem> OnItemRemoved;
-        public event Action<InventoryItem> OnItemConsumed;
-        public event Action<InventoryItem> OnItemAddStacked; 
-        public event Action<InventoryItem> OnItemRemoveStacked; 
+        public readonly List<Item> Items = new();
         
-        public List<InventoryItem> Items = new();
+        public event Action<Item> OnItemAdded;
+        public event Action<Item> OnItemRemoved;
+        public event Action<Item> OnItemConsumed;
+        public event Action<Item> OnItemAddStacked; 
+        public event Action<Item> OnItemRemoveStacked; 
         
-        public void NotifyItemAdded(InventoryItem item)
+        public void NotifyItemAdded(Item item)
         {
             OnItemAdded?.Invoke(item);
         }
 
-        public void NotifyItemRemoved(InventoryItem item)
+        public void NotifyItemRemoved(Item item)
         {
             OnItemRemoved?.Invoke(item);
         }
 
-        public void NotifyItemConsumed(InventoryItem item)
+        public void NotifyItemConsumed(Item item)
         {
             OnItemConsumed?.Invoke(item);
         }
 
-        public void NotifyItemAddStacked(InventoryItem item)
+        public void NotifyItemAddStacked(Item item)
         {
             OnItemAddStacked?.Invoke(item);
         }
         
-        public void NotifyItemRemoveStacked(InventoryItem item)
+        public void NotifyItemRemoveStacked(Item item)
         {
             OnItemRemoveStacked?.Invoke(item);
-        }
-    }
-
-    public class InventoryUseCases
-    {
-        public static void AddItem(Inventory inventory, InventoryItem item)
-        {
-            if (TryAddStackItem(inventory, item) == true) return;
-            
-            inventory.Items.Add(item);
-            inventory.NotifyItemAdded(item);
-        }
-        
-        public static void AddItems(Inventory inventory, InventoryItem item, int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                AddItem(inventory, item);
-            }
-        }
-        
-        public static InventoryItem RemoveItem(Inventory inventory, InventoryItem item, bool removeByRef = false)
-        {
-            InventoryItem res = removeByRef == false
-                ? inventory.Items.FirstOrDefault(i => i.Id == item.Id)
-                : inventory.Items.FirstOrDefault(i => ReferenceEquals(item, i));
-            
-            if(res == null) return null;
-            
-            if (TryRemoveStackItem(inventory, res) == true) return res;
-            
-            inventory.Items.Remove(res);
-            inventory.NotifyItemRemoved(res);
-
-            return res;
-        }
-        
-        public static InventoryItem RemoveItem(Inventory inventory, InventoryItemConfig config)
-        {
-            var item = config.Prototype.Clone();
-            
-            var res = inventory.Items.FirstOrDefault(i => i.Id == item.Id);
-            
-            if(res == null) return null;
-            
-            if (TryRemoveStackItem(inventory, res) == true) return res;
-            
-            inventory.Items.Remove(res);
-            inventory.NotifyItemRemoved(res);
-
-            return res;
-        }
-        
-        public static void RemoveItems(Inventory inventory, InventoryItem item, int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                RemoveItem(inventory, item);
-            }
-        }
-
-        public static void ConsumeItem(Inventory inventory, InventoryItem item, bool consumeByRef = false)
-        {
-            if (CanConsume(item) == true)
-            {
-                var removed = RemoveItem(inventory, item, removeByRef: consumeByRef);
-                if(removed == null) return;
-                
-                inventory.NotifyItemConsumed(removed);
-            }
-        }
-        
-        public static void ConsumeItem(Inventory inventory, InventoryItemConfig itemConfig)
-        {
-            var proto = itemConfig.Prototype;
-
-            if (CanConsume(proto) == true)
-            {
-                var removed = RemoveItem(inventory, itemConfig);
-                if(removed == null) return;
-                
-                inventory.NotifyItemConsumed(removed);
-            }
-        }
-
-        
-        private static bool TryAddStackItem(Inventory inventory, InventoryItem item)
-        {
-            if (CanStack(item) == true)
-            {
-                foreach (var inventoryItem in inventory.Items)
-                {
-                    if(item.Id != inventoryItem.Id) continue;
-                    if(inventoryItem.TryGetComponent(out StackableItemComponent component) == false) continue;
-                    if (component.Count == component.MaxCount) continue;
-
-                    component.Count++;
-                    
-                    inventory.NotifyItemAddStacked(inventoryItem);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool TryRemoveStackItem(Inventory inventory, InventoryItem item)
-        {
-            if (CanStack(item) == true)
-            {
-                if(item.TryGetComponent(out StackableItemComponent component) == false) return false;
-                
-                if(component.Count <= 1) return false;
-
-                component.Count--;
-                
-                inventory.NotifyItemRemoveStacked(item);
-                return true;
-            }
-
-            return false;
-        }
-
-        public static bool CanConsume(InventoryItem item)
-        {
-            return HasFlag(item, ItemFlags.Consumable);
-        }
-
-        public static bool CanStack(InventoryItem item)
-        {
-            return HasFlag(item, ItemFlags.Stackable);
-        }
-
-        public static bool CanEquip(InventoryItem item)
-        {
-            return HasFlag(item, ItemFlags.Equippable);
-        }
-
-        public static bool HasFlag(InventoryItem item, ItemFlags itemFlag)
-        {
-            return (item.Flags & itemFlag) == itemFlag;
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ATG.OtusHW.Inventory
+namespace ATG.Items.Inventory
 {
-    public class HeroItemsConsumeObserver: IDisposable
+    public class HeroConsumeEffectsObserver: IDisposable
     {
         private readonly Inventory _inventory;
         private readonly Hero _hero;
         
-        public HeroItemsConsumeObserver(Inventory inventory, Hero hero)
+        public HeroConsumeEffectsObserver(Inventory inventory, Hero hero)
         {
             _inventory = inventory;
             _hero = hero;
@@ -16,7 +16,7 @@ namespace ATG.OtusHW.Inventory
             _inventory.OnItemConsumed += OnItemConsumed;
         }
         
-        private void OnItemConsumed(InventoryItem item)
+        private void OnItemConsumed(Item item)
         {
             if(item.TryGetComponents(out IEnumerable<HeroEffectComponent> effects) == false) return;
             
