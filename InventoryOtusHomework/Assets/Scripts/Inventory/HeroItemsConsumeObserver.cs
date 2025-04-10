@@ -1,23 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ATG.OtusHW.Inventory
 {
-    public class HeroItemsConsumeObserver
+    public class HeroItemsConsumeObserver: IDisposable
     {
-        private Inventory _inventory;
-        private Hero _hero;
+        private readonly Inventory _inventory;
+        private readonly Hero _hero;
         
-        public void Construct(Inventory inventory, Hero hero)
+        public HeroItemsConsumeObserver(Inventory inventory, Hero hero)
         {
             _inventory = inventory;
             _hero = hero;
             
             _inventory.OnItemConsumed += OnItemConsumed;
-        }
-
-        public void OnDispose()
-        {
-            _inventory.OnItemConsumed -= OnItemConsumed;
         }
         
         private void OnItemConsumed(InventoryItem item)
@@ -28,6 +24,11 @@ namespace ATG.OtusHW.Inventory
             {
                 heroEffectComponent.AddEffect(_hero);
             }
+        }
+        
+        public void Dispose()
+        {
+            _inventory.OnItemConsumed -= OnItemConsumed;
         }
     }
 }

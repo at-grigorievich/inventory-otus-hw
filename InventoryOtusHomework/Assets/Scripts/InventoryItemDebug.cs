@@ -4,18 +4,20 @@ using UnityEngine;
 
 namespace ATG.OtusHW.Inventory
 {
-    public class InventoryItemDebug: MonoBehaviour
+    public sealed class InventoryItemDebug: MonoBehaviour
     {
-        public Inventory Inventory;
-        public Equipment Equipment;
+        [SerializeField] private InventoryItemConfig[] initialItems;
         
-        public Hero Hero;
+        [SerializeField] private Inventory inventory;
+        [SerializeField] private Equipment equipment;
         
-        public InventoryView InventoryView;
-        public EquipmentSetView EquipmentView;
+        [SerializeField] private Hero hero;
         
-        private HeroItemsEffectsController _heroItemsEffectsController = new();
-        private HeroItemsConsumeObserver _heroItemsConsumeObserver = new();
+        [SerializeField] private InventoryView inventoryView;
+        [SerializeField] private EquipmentSetView equipmentView;
+        
+        private HeroItemsEffectsController _heroItemsEffectsController;
+        private HeroItemsConsumeObserver _heroItemsConsumeObserver;
 
         private HeroEquipEffectObserver _heroEquipEffectObserver;
         
@@ -26,48 +28,51 @@ namespace ATG.OtusHW.Inventory
 
         private void Awake()
         {
-            _heroItemsEffectsController.Construct(Inventory, Hero);
-            _heroItemsConsumeObserver.Construct(Inventory, Hero);
+            _heroItemsEffectsController = new HeroItemsEffectsController(inventory, hero);
+            _heroItemsConsumeObserver = new HeroItemsConsumeObserver(inventory, hero);
 
-            _inventoryPresenter = new InventoryPresenter(Inventory, InventoryView);
-            _equipmentPresenter = new EquipmentPresenter(Equipment, EquipmentView);
+            _inventoryPresenter = new InventoryPresenter(inventory, inventoryView);
+            _equipmentPresenter = new EquipmentPresenter(equipment, equipmentView);
 
-            _provider = new InventoryToEquipmentProvider(Inventory, Equipment, InventoryView, EquipmentView);
+            _provider = new InventoryToEquipmentProvider(inventory, equipment, inventoryView, equipmentView);
             
-            _heroEquipEffectObserver = new HeroEquipEffectObserver(Equipment, Hero);
+            _heroEquipEffectObserver = new HeroEquipEffectObserver(equipment, hero);
+        }
+
+        private void Start()
+        {
+            foreach (var inventoryItem in initialItems)
+            {
+                AddItem(inventoryItem);
+            }
         }
 
         private void OnDestroy()
         {
-            _heroItemsEffectsController.OnDispose();
-            _heroItemsConsumeObserver.OnDispose();
+            _heroItemsEffectsController.Dispose();
+            _heroItemsConsumeObserver.Dispose();
             
             _inventoryPresenter.Dispose();
             _equipmentPresenter.Dispose();
             
             _provider.Dispose();
             
-            _heroItemsConsumeObserver.OnDispose();
+            _heroItemsConsumeObserver.Dispose();
+            _heroEquipEffectObserver.Dispose();
         }
 
         [Button]
         public void AddItem(InventoryItemConfig config)
         {
             var item = config.Prototype.Clone();
-            InventoryUseCases.AddItem(Inventory, item);
+            InventoryUseCases.AddItem(inventory, item);
         }
 
         [Button]
         public void RemoveItem(InventoryItemConfig config)
         {
             var item = config.Prototype.Clone();
-            InventoryUseCases.RemoveItem(Inventory, item);
-        }
-
-        [Button]
-        public void ConsumeItem(InventoryItemConfig config)
-        {
-            InventoryUseCases.ConsumeItem(Inventory, config);
+            InventoryUseCases.RemoveItem(inventory, item);
         }
     }
 }

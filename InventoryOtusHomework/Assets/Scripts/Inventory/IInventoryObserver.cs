@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ATG.OtusHW.Inventory
 {
@@ -14,12 +15,12 @@ namespace ATG.OtusHW.Inventory
         void OnItemTakeOff(InventoryItem item);
     }
     
-    public class HeroItemsEffectsController : IInventoryObserver
+    public class HeroItemsEffectsController : IInventoryObserver, IDisposable
     {
-        private Inventory _inventory;
-        private Hero _hero;
-        
-        public void Construct(Inventory inventory, Hero hero)
+        private readonly Inventory _inventory;
+        private readonly Hero _hero;
+
+        public HeroItemsEffectsController(Inventory inventory, Hero hero)
         {
             _inventory = inventory;
             _hero = hero;
@@ -30,16 +31,6 @@ namespace ATG.OtusHW.Inventory
             inventory.OnItemRemoved += OnItemRemoved;
             inventory.OnItemRemoveStacked += OnItemRemoved;
         }
-
-        public void OnDispose()
-        {
-            _inventory.OnItemAdded -= OnItemAdded;
-            _inventory.OnItemAddStacked -= OnItemAdded;
-            
-            _inventory.OnItemRemoved -= OnItemRemoved;
-            _inventory.OnItemRemoveStacked -= OnItemRemoved;
-        }
-        
         public void OnItemAdded(InventoryItem item)
         {
             if(HasEffect(item) == false) return;
@@ -64,6 +55,15 @@ namespace ATG.OtusHW.Inventory
             }
         }
 
+        public void Dispose()
+        {
+            _inventory.OnItemAdded -= OnItemAdded;
+            _inventory.OnItemAddStacked -= OnItemAdded;
+            
+            _inventory.OnItemRemoved -= OnItemRemoved;
+            _inventory.OnItemRemoveStacked -= OnItemRemoved;
+        }
+        
         private bool HasEffect(InventoryItem item)
         {
             return (item.Flags & ItemFlags.Effectable) == ItemFlags.Effectable;
