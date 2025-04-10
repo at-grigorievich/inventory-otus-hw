@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace ATG.OtusHW.Inventory
 {
@@ -7,7 +6,7 @@ namespace ATG.OtusHW.Inventory
     {
         IItemComponent Clone();
     }
-    
+
     [Serializable]
     public class StackableItemComponent: IItemComponent
     {
@@ -20,45 +19,82 @@ namespace ATG.OtusHW.Inventory
         }
     }
     
+    public abstract class HeroEffectComponent : IItemComponent
+    {
+        public abstract IItemComponent Clone();
+        public abstract void AddEffect(Hero hero);
+        public abstract void RemoveEffect(Hero hero);
+    }
+    
     [Serializable]
-    public class HeroDamageEffectComponent : IItemComponent
+    public class HeroDamageEffectComponent : HeroEffectComponent
     {
         public int DamageEffect = 2;
         
-        public IItemComponent Clone()
+        public override IItemComponent Clone()
         {
             return new HeroDamageEffectComponent()
             {
                 DamageEffect = this.DamageEffect
             };
         }
+
+        public override void AddEffect(Hero hero)
+        {
+            hero.damage += DamageEffect;
+        }
+
+        public override void RemoveEffect(Hero hero)
+        {
+            hero.damage -= DamageEffect;
+        }
     }
     
     [Serializable]
-    public class HeroHitPointsEffectComponent : IItemComponent
+    public class HeroHitPointsEffectComponent : HeroEffectComponent
     {
         public int HitPointsEffect = 2;
         
-        public IItemComponent Clone()
+        public override IItemComponent Clone()
         {
             return new HeroHitPointsEffectComponent()
             {
                 HitPointsEffect = this.HitPointsEffect
             };
         }
+
+        public override void AddEffect(Hero hero)
+        {
+            hero.hitPoints += HitPointsEffect;
+        }
+
+        public override void RemoveEffect(Hero hero)
+        {
+            hero.hitPoints -= HitPointsEffect;
+        }
     }
     
     [Serializable]
-    public class HeroSpeedEffectComponent : IItemComponent
+    public class HeroSpeedEffectComponent : HeroEffectComponent
     {
         public int SpeedEffect = 2;
         
-        public IItemComponent Clone()
+        public override IItemComponent Clone()
         {
-            return new HeroHitPointsEffectComponent()
+            return new HeroSpeedEffectComponent()
             {
-                HitPointsEffect = this.SpeedEffect
+                SpeedEffect = this.SpeedEffect
             };
+        }
+
+        public override void AddEffect(Hero hero)
+        {
+            hero.speed += SpeedEffect;
+        }
+
+        public override void RemoveEffect(Hero hero)
+        {
+            hero.speed -= SpeedEffect;
         }
     }
 
@@ -66,22 +102,12 @@ namespace ATG.OtusHW.Inventory
     public class HeroEquipmentComponent : IItemComponent
     {
         public EquipType Tag;
-
-        [SerializeReference] 
-        public IItemComponent[] EquipEffects;
         
         public IItemComponent Clone()
         {
-            var clonedEffects = new IItemComponent[EquipEffects.Length];
-            for (int i = 0; i < EquipEffects.Length; i++)
-            {
-                clonedEffects[i] = EquipEffects[i].Clone();
-            }
-
             return new HeroEquipmentComponent()
             {
-                Tag = this.Tag,
-                EquipEffects = clonedEffects
+                Tag = this.Tag
             };
         }
     }

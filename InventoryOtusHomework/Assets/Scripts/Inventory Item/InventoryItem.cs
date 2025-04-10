@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
@@ -34,7 +36,7 @@ namespace ATG.OtusHW.Inventory
             };
         }
         
-        public bool TryGetComponent<T>(out T component)
+        public bool TryGetComponent<T>(out T component) where T : IItemComponent
         {
             foreach (var itemComponent in Components)
             {
@@ -47,6 +49,23 @@ namespace ATG.OtusHW.Inventory
             
             component = default(T);
             return false;
+        }
+
+        public bool TryGetComponents<T>(out IEnumerable<T> components) where T : IItemComponent
+        {
+            List<T> result = new List<T>();
+            
+            foreach (var itemComponent in Components)
+            {
+                if (itemComponent is T element)
+                {
+                    result.Add(element);
+                }
+            }
+
+            components = result;
+
+            return result.Count > 0;
         }
     }
 

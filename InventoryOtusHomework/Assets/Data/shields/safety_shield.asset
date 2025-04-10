@@ -21,6 +21,8 @@ MonoBehaviour:
     Flags: 4
     Components:
     - rid: 3887614963590103068
+    - rid: 3887614963590103186
+    - rid: 3887614963590103187
   references:
     version: 2
     RefIds:
@@ -28,14 +30,12 @@ MonoBehaviour:
       type: {class: HeroEquipmentComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
       data:
         Tag: 3
-        EquipEffects:
-        - rid: 3887614963590103071
-        - rid: 3887614963590103070
-    - rid: 3887614963590103070
-      type: {class: HeroSpeedEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
-      data:
-        SpeedEffect: -25
-    - rid: 3887614963590103071
+        EquipEffects: []
+    - rid: 3887614963590103186
       type: {class: HeroHitPointsEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
       data:
         HitPointsEffect: 60
+    - rid: 3887614963590103187
+      type: {class: HeroSpeedEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        SpeedEffect: -25

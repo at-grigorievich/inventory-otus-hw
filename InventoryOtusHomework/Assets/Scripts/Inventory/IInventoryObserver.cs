@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace ATG.OtusHW.Inventory
 {
@@ -44,9 +44,11 @@ namespace ATG.OtusHW.Inventory
         {
             if(HasEffect(item) == false) return;
 
-            if (item.TryGetComponent(out HeroDamageEffectComponent damageEffect) == true)
+            if (item.TryGetComponents(out IEnumerable<HeroEffectComponent> effects) == false) return;
+            
+            foreach (var effect in effects)
             {
-                _hero.damage += damageEffect.DamageEffect;
+                effect.AddEffect(_hero);
             }
         }
 
@@ -54,9 +56,11 @@ namespace ATG.OtusHW.Inventory
         {
             if(HasEffect(item) == false) return;
 
-            if (item.TryGetComponent(out HeroDamageEffectComponent damageEffect) == true)
+            if (item.TryGetComponents(out IEnumerable<HeroEffectComponent> effects) == false) return;
+            
+            foreach (var effect in effects)
             {
-                _hero.damage -= damageEffect.DamageEffect;
+                effect.RemoveEffect(_hero);
             }
         }
 

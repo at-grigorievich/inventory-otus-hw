@@ -1015,8 +1015,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  hitPoints: 15
-  damage: 15
+  hitPoints: 10
+  damage: 10
 --- !u!4 &1601097297
 Transform:
   m_ObjectHideFlags: 0
@@ -1594,6 +1594,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4497290382763514173, guid: 57cc4c724d7248a47b1cadaeeaf40c0f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041302373068428385, guid: 57cc4c724d7248a47b1cadaeeaf40c0f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041302373068428385, guid: 57cc4c724d7248a47b1cadaeeaf40c0f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041302373068428385, guid: 57cc4c724d7248a47b1cadaeeaf40c0f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041302373068428385, guid: 57cc4c724d7248a47b1cadaeeaf40c0f, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6193516453303745925, guid: 57cc4c724d7248a47b1cadaeeaf40c0f, type: 3}

@@ -1,5 +1,4 @@
-﻿using System;
-using ATG.OtusHW.Inventory.UI;
+﻿using ATG.OtusHW.Inventory.UI;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -17,7 +16,9 @@ namespace ATG.OtusHW.Inventory
         
         private HeroItemsEffectsController _heroItemsEffectsController = new();
         private HeroItemsConsumeObserver _heroItemsConsumeObserver = new();
-       
+
+        private HeroEquipEffectObserver _heroEquipEffectObserver;
+        
         private InventoryPresenter _inventoryPresenter;
         private EquipmentPresenter _equipmentPresenter;
 
@@ -32,12 +33,21 @@ namespace ATG.OtusHW.Inventory
             _equipmentPresenter = new EquipmentPresenter(Equipment, EquipmentView);
 
             _provider = new InventoryToEquipmentProvider(Inventory, Equipment, InventoryView, EquipmentView);
+            
+            _heroEquipEffectObserver = new HeroEquipEffectObserver(Equipment, Hero);
         }
 
         private void OnDestroy()
         {
             _heroItemsEffectsController.OnDispose();
+            _heroItemsConsumeObserver.OnDispose();
+            
             _inventoryPresenter.Dispose();
+            _equipmentPresenter.Dispose();
+            
+            _provider.Dispose();
+            
+            _heroItemsConsumeObserver.OnDispose();
         }
 
         [Button]

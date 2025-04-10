@@ -1,4 +1,6 @@
-﻿namespace ATG.OtusHW.Inventory
+﻿using System.Collections.Generic;
+
+namespace ATG.OtusHW.Inventory
 {
     public class HeroItemsConsumeObserver
     {
@@ -20,9 +22,11 @@
         
         private void OnItemConsumed(InventoryItem item)
         {
-            if (item.TryGetComponent(out HeroDamageEffectComponent damageEffect) == true)
+            if(item.TryGetComponents(out IEnumerable<HeroEffectComponent> effects) == false) return;
+            
+            foreach (var heroEffectComponent in effects)
             {
-                _hero.damage += damageEffect.DamageEffect;
+                heroEffectComponent.AddEffect(_hero);
             }
         }
     }

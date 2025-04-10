@@ -15,12 +15,13 @@ MonoBehaviour:
   Prototype:
     Id: 15
     MetaData:
-      Name: 
-      Description: 
+      Name: Wooden Sword
+      Description: asfsafafs
       Icon: {fileID: 21300000, guid: a9424a3b842d72444b0c05f46d02138f, type: 3}
     Flags: 4
     Components:
     - rid: 3887614963590103085
+    - rid: 3887614963590103197
   references:
     version: 2
     RefIds:
@@ -28,9 +29,7 @@ MonoBehaviour:
       type: {class: HeroEquipmentComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
       data:
         Tag: 2
-        EquipEffects:
-        - rid: 3887614963590103086
-    - rid: 3887614963590103086
-      type: {class: HeroHitPointsEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+    - rid: 3887614963590103197
+      type: {class: HeroDamageEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
       data:
-        HitPointsEffect: 10
+        DamageEffect: 10
