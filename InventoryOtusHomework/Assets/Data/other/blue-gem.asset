@@ -13,13 +13,29 @@ MonoBehaviour:
   m_Name: blue-gem
   m_EditorClassIdentifier: 
   Prototype:
-    Id: 
+    Id: 8
     MetaData:
-      Name: 
+      Name: Blue Gem
       Description: 
       Icon: {fileID: 0}
-    Flags: 0
-    Components: []
+    Flags: 9
+    Components:
+    - rid: 3887614963590103047
+    - rid: 3887614963590103048
+    - rid: 3887614963590103065
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3887614963590103047
+      type: {class: HeroHitPointsEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        HitPointsEffect: 5
+    - rid: 3887614963590103048
+      type: {class: HeroSpeedEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        SpeedEffect: -1
+    - rid: 3887614963590103065
+      type: {class: StackableItemComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        Count: 1
+        MaxCount: 3

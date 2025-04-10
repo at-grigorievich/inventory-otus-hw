@@ -13,13 +13,29 @@ MonoBehaviour:
   m_Name: diamond_sword
   m_EditorClassIdentifier: 
   Prototype:
-    Id: 
+    Id: 13
     MetaData:
-      Name: 
-      Description: 
-      Icon: {fileID: 0}
-    Flags: 0
-    Components: []
+      Name: Diamond Sword
+      Description: asfasf
+      Icon: {fileID: 21300000, guid: 5b878aa895eb7f346b8f00f278a702fc, type: 3}
+    Flags: 4
+    Components:
+    - rid: 3887614963590103080
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3887614963590103080
+      type: {class: HeroEquipmentComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        Tag: 2
+        EquipEffects:
+        - rid: 3887614963590103081
+        - rid: 3887614963590103082
+    - rid: 3887614963590103081
+      type: {class: HeroDamageEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        DamageEffect: 50
+    - rid: 3887614963590103082
+      type: {class: HeroSpeedEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        SpeedEffect: -5

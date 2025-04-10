@@ -13,13 +13,24 @@ MonoBehaviour:
   m_Name: wooden_sword
   m_EditorClassIdentifier: 
   Prototype:
-    Id: 
+    Id: 15
     MetaData:
       Name: 
       Description: 
       Icon: {fileID: 0}
-    Flags: 0
-    Components: []
+    Flags: 4
+    Components:
+    - rid: 3887614963590103085
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3887614963590103085
+      type: {class: HeroEquipmentComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        Tag: 2
+        EquipEffects:
+        - rid: 3887614963590103086
+    - rid: 3887614963590103086
+      type: {class: HeroHitPointsEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        HitPointsEffect: 10

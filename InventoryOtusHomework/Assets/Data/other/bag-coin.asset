@@ -13,13 +13,18 @@ MonoBehaviour:
   m_Name: bag-coin
   m_EditorClassIdentifier: 
   Prototype:
-    Id: 
+    Id: 7
     MetaData:
-      Name: 
-      Description: 
-      Icon: {fileID: 0}
-    Flags: 0
-    Components: []
+      Name: Bag coin
+      Description: sfafasf
+      Icon: {fileID: 21300000, guid: 351b833fdf96ee5478f396b83886942f, type: 3}
+    Flags: 8
+    Components:
+    - rid: 3887614963590103046
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3887614963590103046
+      type: {class: HeroSpeedEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        SpeedEffect: -5

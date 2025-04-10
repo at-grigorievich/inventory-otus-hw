@@ -13,13 +13,29 @@ MonoBehaviour:
   m_Name: viking-helmet
   m_EditorClassIdentifier: 
   Prototype:
-    Id: 
+    Id: 6
     MetaData:
-      Name: 
-      Description: 
-      Icon: {fileID: 0}
-    Flags: 0
-    Components: []
+      Name: Viking Helmet
+      Description: aa
+      Icon: {fileID: 21300000, guid: ffde914bf7de1f646b2a14fe6e704a48, type: 3}
+    Flags: 4
+    Components:
+    - rid: 3887614963590103053
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3887614963590103053
+      type: {class: HeroEquipmentComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        Tag: 1
+        EquipEffects:
+        - rid: 3887614963590103054
+        - rid: 3887614963590103055
+    - rid: 3887614963590103054
+      type: {class: HeroHitPointsEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        HitPointsEffect: 50
+    - rid: 3887614963590103055
+      type: {class: HeroSpeedEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        SpeedEffect: -10

@@ -28,4 +28,14 @@ MonoBehaviour:
       type: {class: HeroEquipmentComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
       data:
         Tag: 5
-        EquipEffects: []
+        EquipEffects:
+        - rid: 3887614963590103063
+        - rid: 3887614963590103064
+    - rid: 3887614963590103063
+      type: {class: HeroHitPointsEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        HitPointsEffect: 5
+    - rid: 3887614963590103064
+      type: {class: HeroSpeedEffectComponent, ns: ATG.OtusHW.Inventory, asm: Assembly-CSharp}
+      data:
+        SpeedEffect: -2
